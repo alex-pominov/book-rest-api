@@ -1,6 +1,7 @@
-package com.book_rest_api.bookrestapi.resource;
+package com.book_rest_api.bookrestapi.resource.impl;
 
 import com.book_rest_api.bookrestapi.domain.Book;
+import com.book_rest_api.bookrestapi.resource.Resource;
 import com.book_rest_api.bookrestapi.service.IService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
