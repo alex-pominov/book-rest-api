@@ -1,8 +1,16 @@
 package com.book_rest_api.bookrestapi.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class Book {
 
+    @Id
+    @GeneratedValue
     private Long id;
+
     private String title;
     private String author;
     private String coverPhotoURL;

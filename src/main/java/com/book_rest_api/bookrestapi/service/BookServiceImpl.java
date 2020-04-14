@@ -1,65 +1,57 @@
-package com.book_rest_api.bookrestapi.service;
 
+package com.book_rest_api.bookrestapi.service;
 import com.book_rest_api.bookrestapi.domain.Book;
+import com.book_rest_api.bookrestapi.repository.BookRepository;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
-public class BookServiceImpl implements BookService {
+public class BookServiceImpl implements IService<Book> {
 
-    private Long bookId = 100L;
-    private final Map<Long, Book> bookMap = new HashMap<Long, Book>();
+    @Autowired
+    private BookRepository bookRepository;
 
-    {
-        Book book = new Book();
-        book.setId(bookId);
-        book.setTitle("Spring Microservices in Action");
-        book.setAuthor("John Carnell");
-        book.setCoverPhotoURL("https://images-na.ssl-images-amazon.com/images/I/91oZX6G-YGL.jpg");
-        book.setIsbnNumber(161729338L);
-        book.setPrice(2776.00);
-        book.setLanguage("English");
-        bookMap.put(book.getId(), book);
-    }
+//    {
+//        Book book = new Book();
+//        book.setId(bookId);
+//        book.setTitle("Spring Microservices in Action");
+//        book.setAuthor("John Carnell");
+//        book.setCoverPhotoURL("https://images-na.ssl-images-amazon.com/images/I/91oZX6G-YGL.jpg");
+//        book.setIsbnNumber(161729338L);
+//        book.setPrice(2776.00);
+//        book.setLanguage("English");
+//        bookMap.put(book.getId(), book);
+//    }
 
     @Override
     public Collection<Book> findAll() {
-        return bookMap.values();
+        return bookRepository.findAll();
     }
 
     @Override
     public Book findById(Long id) {
-        return bookMap.get(id);
+        return bookRepository.findById(id).get();
     }
 
     @Override
-    public Book save(Book book) {
-        Long newBookId = ++bookId;
-        book.setId(newBookId);
-        bookMap.put(book.getId(), book);
-        return bookMap.get(newBookId);
+    public Book saveOrUpdate(Book book) {
+        return bookRepository.saveAndFlush(book);
     }
 
     @Override
-    public Book update(Book book) {
-        bookId = book.getId();
-        if (bookMap.get(bookId) != null) {
-            bookMap.put(bookId, book);
-            return bookMap.get(bookId);
+    public String deleteById(Long id) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            bookRepository.deleteById(id);
+            jsonObject.put("message", "Book deleted successfully");
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
-        return null;
-    }
-
-    @Override
-    public Book deleteById(Long id) {
-        if(bookMap.get(id) != null) {
-            return bookMap.remove(id);
-        }
-
-        return null;
+        return jsonObject.toString();
     }
 }

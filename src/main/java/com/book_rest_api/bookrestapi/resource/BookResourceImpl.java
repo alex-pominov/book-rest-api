@@ -1,7 +1,7 @@
 package com.book_rest_api.bookrestapi.resource;
 
 import com.book_rest_api.bookrestapi.domain.Book;
-import com.book_rest_api.bookrestapi.service.BookService;
+import com.book_rest_api.bookrestapi.service.IService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import java.util.Collection;
 public class BookResourceImpl implements Resource<Book> {
 
     @Autowired
-    private BookService bookService;
+    private IService<Book> bookService;
 
     @Override
     public ResponseEntity<Collection<Book>> findAll() {
@@ -29,16 +29,16 @@ public class BookResourceImpl implements Resource<Book> {
 
     @Override
     public ResponseEntity<Book> save(Book book) {
-        return new ResponseEntity<>(bookService.save(book), HttpStatus.CREATED);
+        return new ResponseEntity<>(bookService.saveOrUpdate(book), HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<Book> update(Book book) {
-        return new ResponseEntity<>(bookService.update(book), HttpStatus.OK);
+        return new ResponseEntity<>(bookService.saveOrUpdate(book), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Book> deleteById(Long id) {
+    public ResponseEntity<String> deleteById(Long id) {
         return new ResponseEntity<>(bookService.deleteById(id), HttpStatus.OK);
     }
 }
