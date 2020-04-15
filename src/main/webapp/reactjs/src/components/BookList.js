@@ -2,6 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faList, faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { Card, Table, Image, ButtonGroup, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import MyToast from "./MyToast";
 
@@ -80,9 +81,12 @@ const Booklist = () => {
                     <td>{book.language}</td>
                     <td align="center">
                       <ButtonGroup>
-                        <Button size="sm" variant="outline-primary">
+                        <Link
+                          to={`edit/${book.id}`}
+                          className="btn btn-sm btn-outline-primary"
+                        >
                           <FontAwesomeIcon icon={faEdit} />
-                        </Button>{" "}
+                        </Link>{" "}
                         <Button
                           size="sm"
                           variant="outline-danger"
