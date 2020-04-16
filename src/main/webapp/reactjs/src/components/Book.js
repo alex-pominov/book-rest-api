@@ -1,26 +1,19 @@
-import React from "react";
-import { Card, Form, Button, Col } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSave,
-  faPlusSquare,
-  faUndo,
-  faList,
-  faEdit,
-} from "@fortawesome/free-solid-svg-icons";
-import MyToast from "./MyToast";
-
-import axios from "axios";
+import React from 'react';
+import axios from 'axios';
+import { Card, Form, Button, Col } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSave, faPlusSquare, faUndo, faList, faEdit } from '@fortawesome/free-solid-svg-icons';
+import MyToast from './MyToast';
 
 const Book = (props) => {
   const initialState = {
-    id: "",
-    title: "",
-    author: "",
-    coverPhotoURL: "",
-    isbnNumber: "",
-    price: "",
-    language: "",
+    id: '',
+    title: '',
+    author: '',
+    coverPhotoURL: '',
+    isbnNumber: '',
+    price: '',
+    language: '',
   };
 
   const [inputData, setInputData] = React.useState(initialState);
@@ -34,26 +27,17 @@ const Book = (props) => {
   }, []);
 
   const findBookById = (id) => {
-    axios
-      .get(`http://localhost:8080/rest/books/${id}`)
-      .then((response) => {
-        if (response.data != null) {
-          setInputData({ ...response.data });
-        }
-      })
-      .catch((error) => {
-        alert(`Error ${error}`);
-      });
+    axios.get(`http://localhost:8080/rest/books/${id}`).then((response) => {
+      if (response.data != null) {
+        setInputData({ ...response.data });
+      }
+    });
   };
 
   const submitBook = (e) => {
     e.preventDefault();
-
-    const book = {
-      ...inputData,
-    };
-
-    axios.post("http://localhost:8080/rest/books", book).then((response) => {
+    const book = { ...inputData };
+    axios.post('http://localhost:8080/rest/books', book).then((response) => {
       if (response.data != null) {
         setShowToast(true);
         setTimeout(() => {
@@ -63,32 +47,26 @@ const Book = (props) => {
         setShowToast(false);
       }
     });
-
     setInputData(initialState);
   };
 
   const updateBook = (e) => {
     e.preventDefault();
-
-    const book = {
-      ...inputData,
-    };
-
-    axios.put("http://localhost:8080/rest/books", book).then((response) => {
+    const book = { ...inputData };
+    axios.put('http://localhost:8080/rest/books', book).then((response) => {
       if (response.data != null) {
         setShowToast(true);
-        setTimeout(() => setShowToast(false), 3000);
+        setTimeout(() => setShowToast(false), 1000);
         setTimeout(() => booklist(), 1000);
       } else {
         setShowToast(false);
       }
     });
-
     setInputData(initialState);
   };
 
   function handleChange(e) {
-    const value = e.target.value;
+    const { value } = e.target;
     setInputData({
       ...inputData,
       [e.target.name]: value,
@@ -96,23 +74,17 @@ const Book = (props) => {
   }
 
   const booklist = () => {
-    return props.history.push("/list");
+    return props.history.push('/list');
   };
 
   return (
     <>
-      {showToast && (
-        <MyToast
-          show={showToast}
-          message="Book Saved Successfully"
-          type="success"
-        />
-      )}
+      {showToast && <MyToast show={showToast} message="Book Saved Successfully" type="success" />}
 
       <Card className="border border-dark bg-dark text-white">
         <Card.Header>
-          <FontAwesomeIcon icon={inputData.id ? faEdit : faPlusSquare} />{" "}
-          {inputData.id ? "Update Book" : "Add New Book"}
+          <FontAwesomeIcon icon={inputData.id ? faEdit : faPlusSquare} />{' '}
+          {inputData.id ? 'Update Book' : 'Add New Book'}
         </Card.Header>
         <Form
           onSubmit={inputData.id ? updateBook : submitBook}
@@ -130,7 +102,7 @@ const Book = (props) => {
                   className="bg-dark text-white"
                   placeholder="Enter Book Title"
                   autoComplete="off"
-                  value={inputData.title || ""}
+                  value={inputData.title || ''}
                   onChange={handleChange}
                 />
               </Form.Group>
@@ -207,20 +179,14 @@ const Book = (props) => {
               </Form.Group>
             </Form.Row>
           </Card.Body>
-          <Card.Footer style={{ textAlign: "right" }}>
+          <Card.Footer style={{ textAlign: 'right' }}>
             <Button size="sm" variant="success" type="submit">
-              <FontAwesomeIcon icon={faSave} />{" "}
-              {inputData.id ? "Update" : "Submit"}
-            </Button>{" "}
+              <FontAwesomeIcon icon={faSave} /> {inputData.id ? 'Update' : 'Submit'}
+            </Button>{' '}
             <Button size="sm" variant="info" type="reset">
               <FontAwesomeIcon icon={faUndo} /> Reset
-            </Button>{" "}
-            <Button
-              size="sm"
-              variant="info"
-              type="button"
-              onClick={() => booklist()}
-            >
+            </Button>{' '}
+            <Button size="sm" variant="info" type="button" onClick={() => booklist()}>
               <FontAwesomeIcon icon={faList} /> Book List
             </Button>
           </Card.Footer>

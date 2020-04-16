@@ -19,14 +19,16 @@ public class BookRestApiApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Book book = new Book();
-        book.setTitle("Spring Microservices in Action");
-        book.setAuthor("John Carnell");
-        book.setCoverPhotoURL("https://images-na.ssl-images-amazon.com/images/I/91oZX6G-YGL.jpg");
-        book.setIsbnNumber(161729338L);
-        book.setPrice(2776.00);
-        book.setLanguage("English");
-        bookService.saveOrUpdate(book);
+        for (int i = 1; i <= 100; i++) {
+            Book book = new Book();
+            book.setTitle("Spring Microservices in Action " + i);
+            book.setAuthor("John Carnell" + i);
+            book.setCoverPhotoURL("https://images-na.ssl-images-amazon.com/images/I/91oZX6G-YGL.jpg");
+            book.setIsbnNumber(161729338L);
+            book.setPrice(2776.00 + i);
+            book.setLanguage("English");
+            bookService.saveOrUpdate(book);
+        }
     }
 }
 

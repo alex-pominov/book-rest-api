@@ -1,6 +1,6 @@
-import React from "react";
-import { Navbar, Nav } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Navbar, Nav } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 const NavigationBar = () => {
   return (
@@ -9,8 +9,12 @@ const NavigationBar = () => {
         Book Shop
       </Link>
       <Nav className="mr-auto">
-        <Link to="/add" className="nav-link">Add book</Link>
-        <Link to="/list" className="nav-link">Book List</Link>
+        <Link to="/add" className="nav-link">
+          Add book
+        </Link>
+        <Link to="/list" className="nav-link">
+          Book List
+        </Link>
       </Nav>
     </Navbar>
   );

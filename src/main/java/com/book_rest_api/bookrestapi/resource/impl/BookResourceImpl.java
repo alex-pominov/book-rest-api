@@ -4,13 +4,15 @@ import com.book_rest_api.bookrestapi.domain.Book;
 import com.book_rest_api.bookrestapi.resource.Resource;
 import com.book_rest_api.bookrestapi.service.IService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collection;
 
 @RestController
 @RequestMapping("/books")
@@ -21,8 +23,13 @@ public class BookResourceImpl implements Resource<Book> {
     private IService<Book> bookService;
 
     @Override
-    public ResponseEntity<Collection<Book>> findAll() {
-        return new ResponseEntity<>(bookService.findAll(), HttpStatus.OK);
+    public ResponseEntity<Page<Book>> findAll(int pageNumber, int pageSize, String sortBy, String sortDir) {
+        return new ResponseEntity<>(bookService.findAll(
+                PageRequest.of(
+                        pageNumber, pageSize,
+                        sortDir.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending()
+                )
+        ), HttpStatus.OK);
     }
 
     @Override
